@@ -28,84 +28,108 @@
                 transform: translateY(0);
             }
         }
-        /* 카카오 애드핏 반응형 */
-        .kakao_ad_area {
-            width: 100% !important; /* 부모 요소에 맞게 너비 조절 */
-        }
-        .kakao_ad_area iframe {
-            max-width: 100% !important; /* iframe의 최대 너비 제한 */
-            margin: 0 auto; /* 중앙 정렬 */
-        }
+        /* 
+         * 참고: 광고 정렬을 방해하던 .kakao_ad_area 관련 CSS를 제거했습니다.
+         * 이제 Tailwind의 flex justify-center가 정상적으로 동작합니다.
+         */
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <!-- 상단 광고 코드 시작 -->
-        <div class="mb-8 flex justify-center w-full overflow-hidden"> <!-- overflow-hidden 추가 -->
-            <ins class="kakao_ad_area" style="display:block; width:100%;"
-            data-ad-unit = "DAN-MrvlJVBypx2GLFMm"
-            data-ad-width = "320" <!-- 너비를 320으로 조정하여 max-w-md에 맞도록 -->
-            data-ad-height = "50"></ins> <!-- 높이도 적절히 조정 -->
-            <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-        </div>
-        <!-- 상단 광고 코드 끝 -->
+<body class="bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 min-h-screen">
 
-        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">🔮 오늘의 운세 🔮</h1>
+    <!-- 전체 레이아웃을 감싸는 메인 컨테이너 -->
+    <main class="w-full flex justify-center items-start gap-8 p-4">
 
-        <div class="mb-6">
-            <label for="birthDate" class="block text-gray-700 text-sm font-bold mb-2">생년월일 입력 (YYYY-MM-DD):</label>
-            <input type="date" id="birthDate"
-                   class="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300 mb-4">
+        <!-- 좌측 광고 (데스크탑/태블릿에서만 보임) -->
+        <!-- 수정: lg:block -> md:block 으로 변경하여 더 작은 화면(768px 이상)에서도 보이게 함 -->
+        <aside class="hidden md:block w-[160px] sticky top-8">
+            <ins class="kakao_ad_area" style="display:block;"
+                 data-ad-unit = "DAN-H7t6ULlylxAV6zTJ"
+                 data-ad-width = "160"
+                 data-ad-height = "600"></ins>
+        </aside>
 
-            <div class="flex items-center justify-center space-x-6 mb-4">
-                <label class="inline-flex items-center">
-                    <input type="radio" name="calendarType" value="solar" checked
-                           class="form-radio h-4 w-4 text-purple-600 rounded-full focus:ring-purple-500 transition duration-300">
-                    <span class="ml-2 text-gray-700 font-medium">양력</span>
-                </label>
-                <label class="inline-flex items-center">
-                    <input type="radio" name="calendarType" value="lunar"
-                           class="form-radio h-4 w-4 text-purple-600 rounded-full focus:ring-purple-500 transition duration-300">
-                    <span class="ml-2 text-gray-700 font-medium">음력</span>
-                </label>
+        <!-- 메인 운세 콘텐츠 -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md flex-shrink-0">
+            <!-- 상단 광고 코드 시작 (수정됨) -->
+            <!-- flex justify-center 클래스로 광고를 완벽하게 가운데 정렬합니다. -->
+            <div class="mb-8 w-full flex justify-center">
+                <ins class="kakao_ad_area" style="display:block;"
+                     data-ad-unit = "DAN-MrvlJVBypx2GLFMm"
+                     data-ad-width = "250"
+                     data-ad-height = "250"></ins>
+            </div>
+            <!-- 상단 광고 코드 끝 -->
+
+            <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">🔮 오늘의 운세 🔮</h1>
+
+            <div class="mb-6">
+                <label for="birthDate" class="block text-gray-700 text-sm font-bold mb-2">생년월일 입력 (YYYY-MM-DD):</label>
+                <input type="date" id="birthDate"
+                       class="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300 mb-4">
+
+                <div class="flex items-center justify-center space-x-6 mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="calendarType" value="solar" checked
+                               class="form-radio h-4 w-4 text-purple-600 rounded-full focus:ring-purple-500 transition duration-300">
+                        <span class="ml-2 text-gray-700 font-medium">양력</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="calendarType" value="lunar"
+                               class="form-radio h-4 w-4 text-purple-600 rounded-full focus:ring-purple-500 transition duration-300">
+                        <span class="ml-2 text-gray-700 font-medium">음력</span>
+                    </label>
+                </div>
+
+                <label for="birthHour" class="block text-gray-700 text-sm font-bold mb-2">태어난 시간 (선택 사항):</label>
+                <div class="flex space-x-3">
+                    <input type="number" id="birthHour" placeholder="시 (0-23)" min="0" max="23"
+                           class="shadow appearance-none border rounded-xl w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300">
+                    <input type="number" id="birthMinute" placeholder="분 (0-59)" min="0" max="59"
+                           class="shadow appearance-none border rounded-xl w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300">
+                </div>
             </div>
 
-            <label for="birthHour" class="block text-gray-700 text-sm font-bold mb-2">태어난 시간 (선택 사항):</label>
-            <div class="flex space-x-3">
-                <input type="number" id="birthHour" placeholder="시 (0-23)" min="0" max="23"
-                       class="shadow appearance-none border rounded-xl w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300">
-                <input type="number" id="birthMinute" placeholder="분 (0-59)" min="0" max="59"
-                       class="shadow appearance-none border rounded-xl w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 transition duration-300">
+            <div class="flex space-x-4 mb-4">
+                <button id="getFortuneBtn"
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105 shadow-lg">
+                    운세 보기
+                </button>
+                <button id="resetBtn"
+                        class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105 shadow-lg">
+                    다시 보기
+                </button>
+            </div>
+
+            <div id="fortuneResult" class="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200 text-center text-gray-800 text-lg font-semibold min-h-[100px] flex items-center justify-center shadow-inner">
+                생년월일을 입력하고 '운세 보기' 버튼을 눌러주세요.
+            </div>
+
+            <!-- 하단 광고 코드 -->
+            <div class="mt-8 flex justify-center w-full">
+                <ins class="kakao_ad_area" style="display:block;"
+                    data-ad-unit = "DAN-KccXer7GRmtiSjx8"
+                    data-ad-width = "300"
+                    data-ad-height = "250"></ins>
             </div>
         </div>
 
-        <div class="flex space-x-4 mb-4">
-            <button id="getFortuneBtn"
-                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105 shadow-lg">
-                운세 보기
-            </button>
-            <button id="resetBtn"
-                    class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105 shadow-lg">
-                다시 보기
-            </button>
-        </div>
+        <!-- 우측 광고 (데스크탑/태블릿에서만 보임) -->
+        <!-- 수정: lg:block -> md:block 으로 변경하여 더 작은 화면(768px 이상)에서도 보이게 함 -->
+        <aside class="hidden md:block w-[160px] sticky top-8">
+            <ins class="kakao_ad_area" style="display:block;"
+                 data-ad-unit = "DAN-Co1rTbwMp9w0wQgr"
+                 data-ad-width = "160"
+                 data-ad-height = "600"></ins>
+        </aside>
 
-        <div id="fortuneResult" class="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200 text-center text-gray-800 text-lg font-semibold min-h-[100px] flex items-center justify-center shadow-inner">
-            생년월일을 입력하고 '운세 보기' 버튼을 눌러주세요.
-        </div>
+    </main>
 
-        <!-- 기존 하단 광고 코드 -->
-        <div class="mt-8 flex justify-center w-full">
-            <ins class="kakao_ad_area" style="display:none;"
-                data-ad-unit = "DAN-KccXer7GRmtiSjx8"
-                data-ad-width = "300"
-                data-ad-height = "250"></ins>
-            <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-        </div>
-    </div>
+    <!-- 카카오 애드핏 스크립트 (페이지당 1회만 호출) -->
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
+    <!-- 기존 자바스크립트 코드는 변경 없이 그대로 유지 -->
     <script>
-        // 운세 메시지 배열 (다양한 운세 메시지를 추가할 수 있습니다)
+        // ... (자바스크립트 코드는 이전과 동일) ...
         const fortuneMessages = [
             "오늘은 새로운 기회가 찾아올 수 있습니다. 긍정적인 마음으로 맞이하세요!",
             "작은 노력들이 큰 결실을 맺는 하루가 될 것입니다. 꾸준함을 잊지 마세요.",
@@ -316,92 +340,74 @@
                 { name: "개", emoji: "🐶" },
                 { name: "돼지", emoji: "🐷" }
             ];
-            // 1900년을 쥐띠 해로 기준 (1900 % 12 = 4, 쥐띠는 인덱스 0)
-            // 띠는 12지신을 따르므로, 12로 나눈 나머지를 이용
-            // 한국의 띠는 음력 설날을 기준으로 바뀌지만, 여기서는 편의상 양력 연도를 사용합니다.
-            const startYear = 1900; // 쥐띠 시작 연도
+            const startYear = 1900; 
             const index = (birthYear - startYear) % 12;
-            return zodiacSigns[index < 0 ? index + 12 : index]; // 음수 인덱스 방지
+            return zodiacSigns[index < 0 ? index + 12 : index]; 
         }
 
         // '운세 보기' 버튼 클릭 이벤트 리스너
         document.getElementById('getFortuneBtn').addEventListener('click', () => {
             const birthDateInput = document.getElementById('birthDate').value;
-            const hour = document.getElementById('birthHour').value || 0; // 기본값 0
-            const minute = document.getElementById('birthMinute').value || 0; // 기본값 0
+            const hour = document.getElementById('birthHour').value || 0;
+            const minute = document.getElementById('birthMinute').value || 0; 
             const calendarType = document.querySelector('input[name="calendarType"]:checked').value;
             const fortuneResultDiv = document.getElementById('fortuneResult');
 
-            // 입력 유효성 검사
             if (!birthDateInput) {
                 fortuneResultDiv.innerHTML = '<span class="text-red-600">생년월일을 입력해주세요!</span>';
                 return;
             }
 
-            // YYYY-MM-DD 형식의 문자열을 Date 객체로 파싱
             const [yearStr, monthStr, dayStr] = birthDateInput.split('-');
             const year = parseInt(yearStr);
             const month = parseInt(monthStr);
             const day = parseInt(dayStr);
+            const birthDate = new Date(year, month - 1, day); 
 
-            const birthDate = new Date(year, month - 1, day); // JavaScript Date 객체는 월이 0부터 시작
-
-            // 날짜 유효성 검사 (실제로 존재하는 날짜인지, 미래 날짜가 아닌지)
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // 오늘 날짜만 비교하기 위해 시간 초기화
+            today.setHours(0, 0, 0, 0); 
 
             const inputDateOnly = new Date(year, month - 1, day);
-            inputDateOnly.setHours(0, 0, 0, 0); // 입력 날짜만 비교하기 위해 시간 초기화
+            inputDateOnly.setHours(0, 0, 0, 0); 
 
 
-            if (isNaN(birthDate.getTime()) || // 유효하지 않은 날짜 형식
-                birthDate.getFullYear() !== year || // Date 객체 변환 후 연도가 다르면 유효하지 않은 날짜 (예: 2월 30일)
-                birthDate.getMonth() + 1 !== month || // Date 객체 변환 후 월이 다르면 유효하지 않은 날짜
-                birthDate.getDate() !== day || // Date 객체 변환 후 일이 다르면 유효하지 않은 날짜
-                inputDateOnly > today // 미래 날짜인지 확인
+            if (isNaN(birthDate.getTime()) || 
+                birthDate.getFullYear() !== year || 
+                birthDate.getMonth() + 1 !== month || 
+                birthDate.getDate() !== day || 
+                inputDateOnly > today 
             ) {
                 fortuneResultDiv.innerHTML = '<span class="text-red-600">유효하지 않은 생년월일입니다. 다시 확인해주세요.</span>';
                 return;
             }
 
-            // 오늘 날짜 정보 가져오기
             const todayYear = today.getFullYear();
-            const todayMonth = today.getMonth() + 1; // getMonth()는 0부터 시작
+            const todayMonth = today.getMonth() + 1;
             const todayDay = today.getDate();
+            const zodiacInfo = getZodiacSign(year); 
 
-            // 띠 계산
-            const zodiacInfo = getZodiacSign(year); // 띠 이름과 이모지를 포함한 객체 반환
-
-            // 운세, 행운 색상, 행운 숫자 생성을 위한 시드 (오늘 날짜 + 생년월일 + 시간)
-            // 같은 날 같은 생년월일과 시간을 넣으면 같은 결과가 나오도록 설정
             const seed = todayYear * 10000000000 + todayMonth * 100000000 + todayDay * 1000000 +
                          year * 10000 + month * 100 + day +
                          parseInt(hour) * 60 + parseInt(minute);
 
-            // 간단한 의사 난수 생성 함수 (결과 일관성을 위해 사용)
             function pseudoRandom(s) {
                 let x = Math.sin(s++) * 10000;
                 return x - Math.floor(x);
             }
 
-            // 운세 생성
             const fortuneRandom = pseudoRandom(seed);
             const fortuneIndex = Math.floor(fortuneRandom * fortuneMessages.length);
             const fortune = fortuneMessages[fortuneIndex];
 
-            // 행운의 색상 생성
-            const colorRandom = pseudoRandom(seed + 1); // 다른 시드로 독립성 확보
+            const colorRandom = pseudoRandom(seed + 1); 
             const luckyColorIndex = Math.floor(colorRandom * luckyColors.length);
             const luckyColor = luckyColors[luckyColorIndex];
 
-            // 행운의 숫자 생성
-            const numberRandom = pseudoRandom(seed + 2); // 또 다른 시드로 독립성 확보
+            const numberRandom = pseudoRandom(seed + 2); 
             const luckyNumberIndex = Math.floor(numberRandom * luckyNumbers.length);
             const luckyNumber = luckyNumbers[luckyNumberIndex];
 
-            // 태어난 시간 정보
             let birthTimeInfo = '';
-            // 시와 분이 모두 입력되었거나, 시만 입력되었거나, 분만 입력되었을 경우
             if (document.getElementById('birthHour').value && document.getElementById('birthMinute').value) {
                 birthTimeInfo = `${parseInt(hour)}시 ${parseInt(minute)}분`;
             } else if (document.getElementById('birthHour').value) {
@@ -412,13 +418,10 @@
             if (birthTimeInfo) {
                 birthTimeInfo = ` (${birthTimeInfo} 출생)`;
             }
-
-            // 결과 표시
-            // 기존 내용을 비우고 애니메이션 클래스 추가
+            
             fortuneResultDiv.innerHTML = '';
             fortuneResultDiv.classList.add('fortune-result-animation');
 
-            // 애니메이션 완료 후 내용 추가 (선택 사항: 즉시 추가해도 무방)
             setTimeout(() => {
                 fortuneResultDiv.innerHTML = `
                     <div class="text-center">
@@ -441,30 +444,27 @@
                         </p>
                     </div>
                 `;
-                 // 애니메이션 클래스 제거 (다음 운세 보기 시 재적용을 위해)
                 fortuneResultDiv.classList.remove('fortune-result-animation');
-            }, 100); // 짧은 지연 후 내용 추가
+            }, 100); 
         });
 
         // '다시 보기' 버튼 클릭 이벤트 리스너
         document.getElementById('resetBtn').addEventListener('click', () => {
             const fortuneResultDiv = document.getElementById('fortuneResult');
-            // 입력 필드 초기화
-            document.getElementById('birthDate').value = ''; // 날짜 입력 필드 초기화
+            document.getElementById('birthDate').value = '';
             document.getElementById('birthHour').value = '';
             document.getElementById('birthMinute').value = '';
-            document.querySelector('input[name="calendarType"][value="solar"]').checked = true; // 양력 기본 선택
+            document.querySelector('input[name="calendarType"][value="solar"]').checked = true; 
 
-            // 결과 영역 초기화
             fortuneResultDiv.innerHTML = '생년월일을 입력하고 \'운세 보기\' 버튼을 눌러주세요.';
-            fortuneResultDiv.classList.remove('fortune-result-animation'); // 애니메이션 클래스 제거
+            fortuneResultDiv.classList.remove('fortune-result-animation'); 
         });
 
-        // 현재 날짜를 기준으로 날짜 입력 필드의 최대값 설정 (미래 날짜 선택 방지)
+        // 현재 날짜를 기준으로 날짜 입력 필드의 최대값 설정
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
             const year = today.getFullYear();
-            const month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
             const day = today.getDate().toString().padStart(2, '0');
             const maxDate = `${year}-${month}-${day}`;
             document.getElementById('birthDate').setAttribute('max', maxDate);
