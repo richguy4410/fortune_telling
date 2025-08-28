@@ -28,10 +28,28 @@
                 transform: translateY(0);
             }
         }
+        /* 카카오 애드핏 반응형 */
+        .kakao_ad_area {
+            width: 100% !important; /* 부모 요소에 맞게 너비 조절 */
+        }
+        .kakao_ad_area iframe {
+            max-width: 100% !important; /* iframe의 최대 너비 제한 */
+            margin: 0 auto; /* 중앙 정렬 */
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <!-- 상단 광고 코드 시작 -->
+        <div class="mb-8 flex justify-center w-full overflow-hidden"> <!-- overflow-hidden 추가 -->
+            <ins class="kakao_ad_area" style="display:block; width:100%;"
+            data-ad-unit = "DAN-MrvlJVBypx2GLFMm"
+            data-ad-width = "320" <!-- 너비를 320으로 조정하여 max-w-md에 맞도록 -->
+            data-ad-height = "50"></ins> <!-- 높이도 적절히 조정 -->
+            <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+        </div>
+        <!-- 상단 광고 코드 끝 -->
+
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">🔮 오늘의 운세 🔮</h1>
 
         <div class="mb-6">
@@ -76,7 +94,7 @@
             생년월일을 입력하고 '운세 보기' 버튼을 눌러주세요.
         </div>
 
-        <!-- 광고 코드 시작 -->
+        <!-- 기존 하단 광고 코드 -->
         <div class="mt-8 flex justify-center w-full">
             <ins class="kakao_ad_area" style="display:none;"
                 data-ad-unit = "DAN-KccXer7GRmtiSjx8"
@@ -84,8 +102,6 @@
                 data-ad-height = "250"></ins>
             <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
         </div>
-        <!-- 광고 코드 끝 -->
-
     </div>
 
     <script>
